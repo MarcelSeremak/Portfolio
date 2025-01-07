@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Event Detail
+{% endblock %}
+
+{% block css_files %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+{% endblock %}
+
+{% block js_files %}
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.min.js"></script>
+{% endblock %}
+
+{% block content %}
+
+<style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #cbf3f0;
+            justify-content: center;
+            height: 100vh;
+        }
+        .container {
+            max-width: 1000px;
+            margin-top: 50px;
+            margin-bottom: 30px;
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: 700;
+            color: #343a40;
+        }
+        .map-container {
+        height: 200px;
+        width: 300px;
+        margin-bottom: 20px;
+        }
+</style>
+        <h2>{{ event.title }}</h2>
+        <p>{{ event.subtitle }}</p>
+        <div id="map-{{ event.id }}" class="map-container"></div>
+        <p><strong>Time:</strong> {{ event.time }}</p>
+        <p><strong>Author:</strong> {{ event.creator.username }}</p>
+    <div class="card">
+        <div class="card-body d-flex align-items-center">
+            <p class="mb-0">
+                {{ event.description }}
+            </p>
+        </div>
+    </div>
+        <div class="card">
+        <div class="card-body d-flex align-items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" width="46" height="46" fill="currentColor" class="bi bi-ticket ms-1" viewBox="0 0 16 16">
+          <path d="M0 4.5A1.5 1.5 0 0 1 1.5 3h13A1.5 1.5 0 0 1 16 4.5V6a.5.5 0 0 1-.5.5 1.5 1.5 0 0 0 0 3 .5.5 0 0 1 .5.5v1.5a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 11.5V10a.5.5 0 0 1 .5-.5 1.5 1.5 0 1 0 0-3A.5.5 0 0 1 0 6zM1.5 4a.5.5 0 0 0-.5.5v1.05a2.5 2.5 0 0 1 0 4.9v1.05a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-1.05a2.5 2.5 0 0 1 0-4.9V4.5a.5.5 0 0 0-.5-.5z"/>
+        </svg>
+            <h3 class="mb-0 me-5 ms-3">
+                Price: {{ event.price }}$
+            </h3>
+        </div>
+        </div>
+        <div class="card">
+        <div class="card-body d-flex align-items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="46" height="46" fill="currentColor" class="bi bi-wallet ms-1" viewBox="0 0 16 16">
+          <path d="M0 3a2 2 0 0 1 2-2h13.5a.5.5 0 0 1 0 1H15v2a1 1 0 0 1 1 1v8.5a1.5 1.5 0 0 1-1.5 1.5h-12A2.5 2.5 0 0 1 0 12.5zm1 1.732V12.5A1.5 1.5 0 0 0 2.5 14h12a.5.5 0 0 0 .5-.5V5H2a2 2 0 0 1-1-.268M1 3a1 1 0 0 0 1 1h12V2H2a1 1 0 0 0-1 1"/>
+        </svg>
+            <h3 class="mb-0 ms-3">
+                Left: {{ event.tickets_amount }}
+            </h3>
+        </div>
+        </div>
+        </div>
+    </div>
+{% if user.is_authenticated %}
+    <a href="{% url 'cart' event.id %}" class="btn btn-primary mt-5 me-3">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bag" viewBox="0 0 16 16">
+            <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"/>
+        </svg> Buy Ticket
+    </a>
+{% else %}
+    <a href="{% url 'login' %}" class="btn btn-primary mt-5 me-3">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bag" viewBox="0 0 16 16">
+            <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"/>
+        </svg> Log in to buy
+    </a>
+{% endif %}
+        <a href="{% url 'events' %}" class="btn btn-primary mt-5">Back to Events</a>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const events = JSON.parse('{{ events_data|escapejs }}');
+
+            events.forEach(event => {
+                const mapId = `map-${event.id}`;
+                const mapContainer = document.getElementById(mapId);
+                if (mapContainer) {
+                    const map = L.map(mapId).setView([event.place_lat, event.place_lng], 13);
+                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        attribution: '© OpenStreetMap contributors'
+                    }).addTo(map);
+                    L.marker([event.place_lat, event.place_lng]).addTo(map)
+                        .bindPopup(`<b>${event.title}</b><br>${event.subtitle}`).openPopup();
+                }
+            });
+        });
+    </script>
+{% endblock %}

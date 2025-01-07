@@ -1,0 +1,21 @@
+        .contact-container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 30px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: white;
+            border-radius: 10px;
+        }
+        .contact-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .form-control {
+            border-radius: 0.25rem;
+        }
+        .btn-primary {
+            border-radius: 0.25rem;
+        }
+        body {
+            background-color: #cbf3f0 !important;
+        }

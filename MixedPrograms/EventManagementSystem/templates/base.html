@@ -1,0 +1,133 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{% static 'basejs.js' %}"></script>
+    {% block css_files %}
+
+    {% endblock %}
+
+    {% block js_files %}
+
+    {% endblock %}
+
+    <style>
+        body {
+            overflow-x: hidden;
+        }
+        nav.navbar {
+            font-family: 'Roboto', sans-serif;
+            font-weight: 700;
+            padding: 15px;
+        }
+        #sidebar-wrapper {
+            position: fixed;
+            top: 59px;
+            left: 0;
+            height: 100%;
+            width: 250px;
+            background-color: #343a40;
+            z-index: 1000;
+            transition: all 0.3s;
+        }
+        .hamburger {
+            position: fixed;
+            top: 75px;
+            left: 35px;
+            z-index: 1100;
+            transition: all 0.3s;
+        }
+        .hamburger.is-open {
+            left: -35px;
+        }
+        .is-open {
+            transform: translateX(250px);
+        }
+        #wrapper.toggled #sidebar-wrapper {
+            margin-left: 0;
+        }
+        #page-content-wrapper {
+            width: 100%;
+            padding-top: 86px;
+        }
+        .overlay {
+            display: none;
+        }
+        .overlay.is-open {
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1050;
+        }
+
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand navbar-dark bg-dark fixed-top">
+    <a class="navbar-brand" href="{% url 'homepage' %}">EvenToo-Event Management System</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample02" aria-controls="navbarsExample02" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+</nav>
+
+<div id="wrapper">
+    <div class="overlay"></div>
+
+    <!-- Sidebar -->
+    <nav class="navbar navbar-inverse" id="sidebar-wrapper" role="navigation">
+        <ul class="nav sidebar-nav">
+            <div class="sidebar-header">
+                <div class="sidebar-brand">
+                </div>
+            </div>
+            <li><a href="{% url 'homepage' %}">Home</a></li>
+            <li><a href="{% url 'events' %}">Events</a></li>
+            <li><a href="{% url 'cart_without_adding' %}">Cart</a></li>
+            <li><a href="{% url 'contact' %}">Contact</a></li>
+            {% if not user.is_authenticated %}
+            <li><a href="{% url 'register' %}">Sign up</a></li>
+            <li><a href="{% url 'login' %}">Log in</a></li>
+            {% else %}
+            <li><a href="{% url 'logout' %}">Log out</a></li>
+            {% endif %}
+            <li><a href="https://github.com/MarcelSeremak">Follow me</a></li>
+        </ul>
+    </nav>
+    <!-- /#sidebar-wrapper -->
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+        <button type="button" class="hamburger animated fadeInLeft is-closed" data-toggle="offcanvas">
+            <span class="hamb-top"></span>
+            <span class="hamb-middle"></span>
+            <span class="hamb-bottom"></span>
+        </button>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-lg-offset-2">
+                    {% block content %}
+                    {% endblock %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /#page-content-wrapper -->
+</div>
+<!-- /#wrapper -->
+
+
+</body>
+</html>

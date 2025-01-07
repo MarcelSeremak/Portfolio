@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block title %}Homepage{% endblock %}
+
+{% block content %}
+
+<style>
+    .carousel-item {
+        background-size: cover;
+        background-color: transparent;
+        background-position: center;
+        height: 600px;
+    }
+    .carousel-caption {
+        background-color: rgba(0, 0, 0, 0.5);
+        color: white;
+        padding: 20px;
+    }
+
+</style>
+
+<div id="myCarousel" class="carousel slide mb-6 mt-4 mb-5" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+        <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="active" aria-label="Slide 1" aria-current="true"></button>
+        <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" aria-label="Slide 2" class=""></button>
+        <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" aria-label="Slide 3" class=""></button>
+    </div>
+    <div class="carousel-inner">
+        <div class="carousel-item active" style="background-image: url('static/images/desk.jpg');">
+            <div class="container">
+                <div class="carousel-caption text-start">
+                    <h1>Manage your projects. </h1>
+                    <p class="opacity-75">With this website, you can manage your plans
+                        for upcoming programming projects, write down ideas for projects
+                        and in which language and when you want to implement them</p>
+                </div>
+            </div>
+        </div>
+        <div class="carousel-item" style="background-image: url('static/images/ideas.jpg');">
+            <div class="container">
+                <div class="carousel-caption">
+                    <h1>Get random project ideas</h1>
+                    <p>For earning points, which you get by completing projects,
+                        you can obtain an idea for the next project selected by me, which may appear in your portfolio</p>
+                </div>
+            </div>
+        </div>
+        <div class="carousel-item" style="background-image: url('static/images/github.png');">
+            <div class="container">
+                <div class="carousel-caption text-end">
+                    <h1>Psst...</h1>
+                    <p>Take a look at my Github for more interesting projects like this website</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
+
+<hr class="featurette-divider my-5">
+
+<div class="row featurette mx-5">
+      <div class="col-md-7">
+        <h2 class="featurette-heading fw-normal lh-1">Want to start already?.</h2>
+        <p class="lead">Create a free account by registering.
+            Click on "Your Profile" in the top right corner
+            and then select "Register". The rest is a formality,
+            we'll see you on the other side.</p>
+      </div>
+      <div class="col-md-5">
+        <img src="static/images/programmer.jpg" class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto">
+
+      </div>
+    </div>
+
+<hr class="featurette-divider my-5">
+
+<div class="row featurette mx-5">
+      <div class="col-md-7 order-md-2">
+        <h2 class="featurette-heading fw-normal lh-1">Tired of writing ideas on paper?</h2>
+        <p class="lead">I know exactly the pain when you're throwing away another
+            piece of paper with scribbles about an idea for your next project,
+            or when you're already writing another marker on the idea board
+            and the sponge begs for mercy from the constant wiping.
+            This website is a solution to your problem, all ideas for projects
+            sorted and at the same time kept in an aesthetic order.</p>
+      </div>
+      <div class="col-md-5 order-md-1">
+        <img src="static/images/paper.jpg" class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto">
+      </div>
+    </div>
+
+<hr class="featurette-divider my-5">
+{% endblock %}

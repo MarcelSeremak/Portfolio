@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Shopping Cart
+{% endblock %}
+
+{% block css_files %}
+<link rel="stylesheet" href="{% static 'payments/cart.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="cart-container">
+        <div class="cart-header">
+            <h1>Your Event Ticket Cart</h1>
+            <p>Review your tickets below and proceed to confirm your purchase. Once confirmed, you will receive your tickets via email.</p>
+        </div>
+        <div class="cart-items-container">
+            {% for ticket in user_tickets %}
+            <div class="cart-items">
+            <div class="item-details">
+                <h3>{{ ticket.event.title }}</h3>
+                <p>Event Date: {{ ticket.event.time }}</p>
+            </div>
+            <div class="item-price">
+                <span>${{ ticket.event.price }}</span>
+            </div>
+                <div class="item-delete">
+                    <a href="{% url 'delete_ticket' ticket.id %}" class="btn btn-danger">Delete</a>
+                </div>
+        </div>
+<hr>
+{% endfor %}
+        </div>
+        <div class="cart-footer">
+            <form method="post" action="{% url 'cart_without_adding' %}">
+                {% csrf_token %}
+                <div class="cart-total">
+                    <span>Total:</span>
+                    <span class="total-amount">${{ total_amount }}</span>
+                </div>
+                <input type="email" placeholder="Enter your email for the ticket" class="email-input" required>
+                <button type="submit" class="confirm-button">Confirm Purchase</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

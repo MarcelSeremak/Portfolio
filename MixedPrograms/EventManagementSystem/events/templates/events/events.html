@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Events
+{% endblock %}
+
+{% block css_files %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+{% endblock %}
+
+{% block js_files %}
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const events = JSON.parse('{{ events_data|escapejs }}');
+
+        events.forEach(event => {
+            const mapId = `map-${event.id}`;
+            const mapContainer = document.getElementById(mapId);
+            if (mapContainer) {
+                const map = L.map(mapId).setView([event.place_lat, event.place_lng], 13);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '© OpenStreetMap contributors'
+                }).addTo(map);
+                L.marker([event.place_lat, event.place_lng]).addTo(map)
+                    .bindPopup(`<b>${event.title}</b><br>${event.subtitle}`).openPopup();
+            }
+        });
+    });
+</script>
+{% endblock %}
+
+{% block content %}
+
+<style>
+    .map-container {
+        height: 200px;
+        width: 300px;
+        margin-bottom: 20px;
+    }
+</style>
+
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Event List</h2>
+        {% if user.is_authenticated %}
+        <a href="{% url 'create_event' %}" class="btn btn-success">
+            <i class="fas fa-plus"></i> Add Event
+        </a>
+        {% endif %}
+    </div>
+    <div class="btn-group mb-4" role="group" aria-label="Sort buttons">
+        <a href="?sort_by=time" class="btn btn-primary"><i class="fas fa-clock"></i> Sort by Time</a>
+        <a href="?sort_by=place" class="btn btn-primary"><i class="fas fa-map-marker-alt"></i> Sort by Place</a>
+        <a href="?sort_by=title" class="btn btn-primary"><i class="fas fa-heading"></i> Sort by Title</a>
+        <a href="?sort_by=creator__username" class="btn btn-primary"><i class="fas fa-user"></i> Sort by Author</a>
+    </div>
+    <div class="event-container p-4 rounded shadow-sm bg-white">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Subtitle</th>
+                    <th>Place</th>
+                    <th>Time</th>
+                    <th>Author</th>
+                    <th>Tickets Amount</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for event in events %}
+                    <tr>
+                        <td><strong>{{ event.title }}</strong></td>
+                        <td>{{ event.subtitle }}</td>
+                        <td>
+                            <div id="map-{{ event.id }}" class="map-container"></div>
+                        </td>
+                        <td>{{ event.time }}</td>
+                        <td>{{ event.creator.username }}</td>
+                        <td>{{ event.tickets_amount }}</td>
+                        <td>{{ event.price }}</td>
+                        <td>
+                            <a href="{% url 'event_detail' event.slug %}" class="btn btn-info">
+                                <i class="fas fa-info-circle"></i> View Details
+                            </a>
+                        </td>
+                        {% if user.is_authenticated %}
+                        <td>
+                            <a href="{% url 'cart' event.id %}" class="btn btn-info">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bag" viewBox="0 0 16 16">
+                                <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"/>
+                                </svg> Buy Ticket
+                            </a>
+                        </td>
+                        {% endif %}
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center">No events available.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}
+
+
