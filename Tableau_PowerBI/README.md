@@ -43,7 +43,7 @@ It provides an interactive way to analyze **crime categories**, **subcategories*
 - Trend analysis to highlight key patterns over time.  
 
 ### 📄 Full Report (PDF)  
-[![Crimes Dashboard Report](./docs/CrimesDashboardPreview.png)](./CrimesDashboardAll.pdf)  
+[![Crimes Dashboard Report](./docs/CrimeDashboardPreview.png)](./CrimeDashboardAll.pdf)  
  
 
 --- 
